@@ -1,5 +1,7 @@
 package com.lecture.restservice.model;
 
+import java.util.Objects;
+
 public class Tree {
     private int id;
     private String type;
@@ -44,5 +46,21 @@ public class Tree {
 
     public void setGarden(Garden garden) {
         this.garden = garden;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tree tree = (Tree) o;
+        return id == tree.id &&
+                type.equals(tree.type) &&
+                sort.equals(tree.sort) &&
+                garden.equals(tree.garden);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, sort, garden);
     }
 }

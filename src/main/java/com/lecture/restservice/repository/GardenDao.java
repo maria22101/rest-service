@@ -5,13 +5,13 @@ import com.lecture.restservice.model.Garden;
 import java.util.List;
 
 public interface GardenDao {
-    Garden create(String owner);
+    Garden create(Garden garden);
 
     List<Garden> findAll();
 
     Garden findById(int id);
 
-    Garden save(Garden garden);
+    Garden update(Garden garden);
 
     void deleteById(int id);
 }

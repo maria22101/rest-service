@@ -5,13 +5,13 @@ import com.lecture.restservice.model.Tree;
 import java.util.List;
 
 public interface TreeDao {
-    Tree create(String type, String sort);
+    Tree create(Tree tree);
 
     List<Tree> findAll();
 
     Tree findById(int id);
 
-    Tree save(Tree tree);
+    Tree update(Tree tree);
 
     void deleteById(int id);
 }
