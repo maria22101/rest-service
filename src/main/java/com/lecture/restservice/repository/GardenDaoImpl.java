@@ -2,7 +2,6 @@ package com.lecture.restservice.repository;
 
 import com.lecture.restservice.exception.NoElementByThisIndexException;
 import com.lecture.restservice.model.Garden;
-import com.lecture.restservice.model.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
