@@ -1,23 +1,36 @@
 package com.lecture.restservice.repository;
 
-import com.lecture.restservice.exception.NoElementByThisIndexException;
+import com.lecture.restservice.exception.NoElementByThisIdException;
+import com.lecture.restservice.exception.NoSuchElementForUpdateException;
 import com.lecture.restservice.model.Garden;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class GardenDaoImpl implements GardenDao{
     private List<Garden> gardensStorage = new ArrayList<>();
+//    private List<Garden> gardensStorage = new ArrayList<Garden>(){{
+//        add(new Garden(1,"Ivan", new ArrayList<Tree>(){{
+//            add(new Tree(1, "Apple", "2.43456, 4.56486",1));
+//            add(new Tree(2, "Apple", "2.43567, 4.56490", 1));
+//        }}));
+//        add(new Garden(2, "Mykola", new ArrayList<Tree>(){{
+//            add(new Tree(3, "Pear", "3.45678, 4.34567", 2));
+//            add(new Tree(4, "Plum", "3.45688, 4.35555", 2));
+//        }}));
+//    }};
 
     @Override
     public Garden create(Garden garden) {
-        int gardenId;
         if (gardensStorage.isEmpty()) {
-            gardenId = 1;
-        } else {
-            gardenId = gardensStorage.size() + 1;
+            garden.setId(1);
+        }else {
+            int lastElementId = gardensStorage.get(gardensStorage.size() - 1).getId();
+            garden.setId(lastElementId + 1);
         }
-        garden.setId(gardenId);
+
         gardensStorage.add(garden);
         return garden;
     }
@@ -32,7 +45,7 @@ public class GardenDaoImpl implements GardenDao{
         return gardensStorage.stream()
                 .filter(g -> g.getId() == id)
                 .findFirst()
-                .orElseThrow(NoElementByThisIndexException::new);
+                .orElseThrow(NoElementByThisIdException::new);
     }
 
     @Override
@@ -41,7 +54,7 @@ public class GardenDaoImpl implements GardenDao{
             gardensStorage.set(gardensStorage.indexOf(garden), garden);
             return garden;
         }else {
-            return create(garden);
+            throw new NoSuchElementForUpdateException();
         }
     }
 
@@ -50,7 +63,7 @@ public class GardenDaoImpl implements GardenDao{
         Garden gardenToDelete = gardensStorage.stream()
                 .filter(t -> t.getId() == id)
                 .findFirst()
-                .orElseThrow(NoElementByThisIndexException::new);
+                .orElseThrow(NoElementByThisIdException::new);
 
         gardensStorage.remove(gardenToDelete);
     }

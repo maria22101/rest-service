@@ -1,23 +1,31 @@
 package com.lecture.restservice.repository;
 
-import com.lecture.restservice.exception.NoElementByThisIndexException;
+import com.lecture.restservice.exception.NoElementByThisIdException;
+import com.lecture.restservice.exception.NoSuchElementForUpdateException;
 import com.lecture.restservice.model.Tree;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+@Repository
 public class TreeDaoImpl implements TreeDao {
     private List<Tree> treesStorage = new ArrayList<>();
+//    private List<Tree> treesStorage = new ArrayList<Tree>() {{
+//        add(new Tree(1, "Apple", "2.43456, 4.56486",1));
+//        add(new Tree(2, "Apple", "2.43567, 4.56490", 1));
+//        add(new Tree(3, "Pear", "3.45678, 4.34567", 2));
+//        add(new Tree(4, "Plum", "3.45688, 4.35555", 2));
+//    }};
 
     @Override
     public Tree create(Tree tree) {
-        int treeId;
         if (treesStorage.isEmpty()) {
-            treeId = 1;
+            tree.setId(1);
         } else {
-            treeId = treesStorage.size() + 1;
+            int lastElementId = treesStorage.get(treesStorage.size() - 1).getId();
+            tree.setId(lastElementId + 1);
         }
-        tree.setId(treeId);
+
         treesStorage.add(tree);
         return tree;
     }
@@ -28,30 +36,19 @@ public class TreeDaoImpl implements TreeDao {
     }
 
     @Override
-    public Tree findById(int id) {
-        return treesStorage.stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElseThrow(NoElementByThisIndexException::new);
-    }
-
-    @Override
     public Tree update(Tree tree) {
-        if(treesStorage.contains(tree)) {
-            treesStorage.set(treesStorage.indexOf(tree), tree);
-            return tree;
-        }else {
-            return create(tree);
-        }
+        Tree treeToUpdate = treesStorage
+                .stream()
+                .filter(t -> t.getId() == tree.getId())
+                .findFirst()
+                .orElseThrow(NoSuchElementForUpdateException::new);
+
+        treesStorage.set(treesStorage.indexOf(treeToUpdate), tree);
+        return tree;
     }
 
     @Override
-    public void deleteById(int id) {
-        Tree treeToDelete = treesStorage.stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElseThrow(NoElementByThisIndexException::new);
-
-        treesStorage.remove(treeToDelete);
+    public void delete(Tree tree) {
+        treesStorage.remove(tree);
     }
 }

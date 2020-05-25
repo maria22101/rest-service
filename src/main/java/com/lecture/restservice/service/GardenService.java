@@ -1,6 +1,7 @@
 package com.lecture.restservice.service;
 
 import com.lecture.restservice.model.Garden;
+import com.lecture.restservice.model.Tree;
 import com.lecture.restservice.repository.GardenDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,9 @@ public class GardenService {
 
     public void deleteById(int id) {
         gardenDaoImpl.deleteById(id);
+    }
+
+    public List<Tree> getGardenTrees(int id) {
+        return gardenDaoImpl.findById(id).getTrees();
     }
 }

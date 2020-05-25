@@ -4,13 +4,21 @@ import java.util.Objects;
 
 public class Tree {
     private int id;
-    private String type;
-    private String sort;
-    private Garden garden;
+    private String fruit;
+    private String geoLocation;
+    private int gardenId;
 
-    public Tree(String type, String sort) {
-        this.type = type;
-        this.sort = sort;
+    public Tree(String fruit, String geoLocation, int gardenId) {
+        this.fruit = fruit;
+        this.geoLocation = geoLocation;
+        this.gardenId = gardenId;
+    }
+
+    public Tree(int id, String fruit, String geoLocation, int gardenId) {
+        this.id = id;
+        this.fruit = fruit;
+        this.geoLocation = geoLocation;
+        this.gardenId = gardenId;
     }
 
     public Tree() {
@@ -24,28 +32,28 @@ public class Tree {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getFruit() {
+        return fruit;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setFruit(String fruit) {
+        this.fruit = fruit;
     }
 
-    public String getSort() {
-        return sort;
+    public String getGeoLocation() {
+        return geoLocation;
     }
 
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setGeoLocation(String geoLocation) {
+        this.geoLocation = geoLocation;
     }
 
-    public Garden getGarden() {
-        return garden;
+    public int getGardenId() {
+        return gardenId;
     }
 
-    public void setGarden(Garden garden) {
-        this.garden = garden;
+    public void setGardenId(int gardenId) {
+        this.gardenId = gardenId;
     }
 
     @Override
@@ -53,14 +61,21 @@ public class Tree {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tree tree = (Tree) o;
-        return id == tree.id &&
-                type.equals(tree.type) &&
-                sort.equals(tree.sort) &&
-                garden.equals(tree.garden);
+        return geoLocation.equals(tree.geoLocation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, sort, garden);
+        return Objects.hash(geoLocation);
+    }
+
+    @Override
+    public String toString() {
+        return "Tree{" +
+                "id=" + id +
+                ", fruit='" + fruit + '\'' +
+                ", geoLocation='" + geoLocation + '\'' +
+                ", gardenId=" + gardenId +
+                '}';
     }
 }

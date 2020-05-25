@@ -1,14 +1,22 @@
 package com.lecture.restservice.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Garden {
     private int id;
     private String owner;
     private List<Tree> trees = new ArrayList<>();
+
+    public Garden(int id, String owner, List<Tree> trees) {
+        this.id = id;
+        this.owner = owner;
+        this.trees = trees;
+    }
+
+    public Garden(int id, String owner) {
+        this.id = id;
+        this.owner = owner;
+    }
 
     public Garden(String owner) {
         this.owner = owner;
@@ -46,13 +54,20 @@ public class Garden {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Garden garden = (Garden) o;
-        return id == garden.id &&
-                owner.equals(garden.owner) &&
-                trees.equals(garden.trees);
+        return id == garden.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, owner, trees);
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Garden{" +
+                "id=" + id +
+                ", owner='" + owner + '\'' +
+                ", trees=" + trees +
+                '}';
     }
 }

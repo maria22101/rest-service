@@ -34,12 +34,17 @@ public class GardenController {
     }
 
     @PutMapping
-    public Garden updateGardenById(@RequestBody Garden garden) {
+    public Garden updateGarden(@RequestBody Garden garden) {
         return gardenService.update(garden);
     }
 
     @DeleteMapping("/{id}")
     public void deleteGardenById(@PathVariable int id) {
         gardenService.deleteById(id);
+    }
+
+    @GetMapping("/{id}/trees")
+    public List<Tree> getGardenTrees(@PathVariable int id) {
+        return gardenService.getGardenTrees(id);
     }
 }

@@ -33,7 +33,7 @@ public class TreeController {
     }
 
     @PutMapping
-    public Tree updateTreeById(@RequestBody Tree tree) {
+    public Tree updateTree(@RequestBody Tree tree) {
         return treeService.update(tree);
     }
 

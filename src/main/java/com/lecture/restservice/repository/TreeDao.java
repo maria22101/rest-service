@@ -9,9 +9,7 @@ public interface TreeDao {
 
     List<Tree> findAll();
 
-    Tree findById(int id);
-
     Tree update(Tree tree);
 
-    void deleteById(int id);
+    void delete(Tree tree);
 }
