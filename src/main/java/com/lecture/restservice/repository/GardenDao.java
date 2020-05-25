@@ -9,9 +9,7 @@ public interface GardenDao {
 
     List<Garden> findAll();
 
-    Garden findById(int id);
-
     Garden update(Garden garden);
 
-    void deleteById(int id);
+    void delete(Garden garden);
 }
