@@ -72,7 +72,7 @@ public class GardenServiceTest {
         Garden garden = new Garden(ID, GARDEN_OWNER);
 
         when(gardenRepository.findAll()).thenReturn(Collections.singletonList(garden));
-        Garden result = testingServiceInstance.findById(ID + 1);
+        testingServiceInstance.findById(ID + 1);
     }
 
     @Test
