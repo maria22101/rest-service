@@ -1,6 +1,6 @@
 package com.lecture.restservice.service;
 
-import com.lecture.restservice.exception.ImpossibleToCreateElementException;
+import com.lecture.restservice.exception.ImpossibleToCreateTreeException;
 import com.lecture.restservice.exception.NoElementByThisIdException;
 import com.lecture.restservice.exception.NoSuchElementForUpdateException;
 import com.lecture.restservice.model.Garden;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 @Service
 public class TreeService {
@@ -28,14 +27,14 @@ public class TreeService {
         if (gardenDaoImpl.findAll().isEmpty()
                 || tree.getGardenId() == 0
                 || treeDaoImpl.findAll().contains(tree)) {
-            throw new ImpossibleToCreateElementException();
+            throw new ImpossibleToCreateTreeException();
         }
 
         Garden gardenForTree = gardenDaoImpl.findAll()
                 .stream()
                 .filter(g -> g.getId() == tree.getGardenId())
                 .findFirst()
-                .orElseThrow(ImpossibleToCreateElementException::new);
+                .orElseThrow(ImpossibleToCreateTreeException::new);
 
         Tree newTree = treeDaoImpl.create(tree);
         gardenForTree.getTrees().add(tree);
@@ -58,15 +57,17 @@ public class TreeService {
 
     public Tree update(Tree tree) {
 
+        try {
+            findById(tree.getId());
+        } catch (NoElementByThisIdException e) {
+            throw new NoSuchElementForUpdateException();
+        }
+
         Garden gardenWithTreeToUpdate = gardenDaoImpl.findAll()
                 .stream()
-                .filter(new Predicate<Garden>() {
-                    @Override
-                    public boolean test(Garden garden) {
-                        return garden.getTrees().stream()
-                                .anyMatch(t -> t.getId() == tree.getId());
-                    }
-                })
+                .filter(garden -> garden.getTrees()
+                        .stream()
+                        .anyMatch(t -> t.getId() == tree.getId()))
                 .findFirst()
                 .orElseThrow(NoSuchElementForUpdateException::new);
 
@@ -82,19 +83,14 @@ public class TreeService {
         return updatedTree;
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws NoElementByThisIdException {
 
         Tree treeToDelete = findById(id);
 
         Garden gardenWithTreeToDelete = gardenDaoImpl.findAll()
                 .stream()
-                .filter(new Predicate<Garden>() {
-                    @Override
-                    public boolean test(Garden garden) {
-                        return garden.getTrees().stream()
-                                .anyMatch(t -> t.getId() == id);
-                    }
-                })
+                .filter(garden -> garden.getTrees().stream()
+                        .anyMatch(t -> t.getId() == id))
                 .findFirst()
                 .orElseThrow(NoElementByThisIdException::new);
 

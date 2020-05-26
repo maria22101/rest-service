@@ -37,13 +37,12 @@ public class TreeDaoImpl implements TreeDao {
 
     @Override
     public Tree update(Tree tree) {
-        Tree treeToUpdate = treesStorage
+        Optional<Tree> treeToUpdate = treesStorage
                 .stream()
                 .filter(t -> t.getId() == tree.getId())
-                .findFirst()
-                .orElseThrow(NoSuchElementForUpdateException::new);
+                .findFirst();
 
-        treesStorage.set(treesStorage.indexOf(treeToUpdate), tree);
+        treeToUpdate.ifPresent(t -> treesStorage.set(treesStorage.indexOf(t), tree));
         return tree;
     }
 

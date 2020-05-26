@@ -1,6 +1,7 @@
 package com.lecture.restservice.service;
 
 import com.lecture.restservice.exception.NoElementByThisIdException;
+import com.lecture.restservice.exception.NoSuchElementForUpdateException;
 import com.lecture.restservice.model.Garden;
 import com.lecture.restservice.model.Tree;
 import com.lecture.restservice.repository.GardenDaoImpl;
@@ -40,12 +41,17 @@ public class GardenService {
     }
 
     public Garden update(Garden garden) {
+        try {
+            findById(garden.getId());
+        } catch (NoElementByThisIdException e) {
+            throw new NoSuchElementForUpdateException();
+        }
         updateTreesStorageWithNewTrees(garden);
         removeMissingTreesFromTreesStorage(garden);
         return gardenDaoImpl.update(garden);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws NoElementByThisIdException {
         Garden gardenToDelete = findById(id);
         gardenToDelete.getTrees()
                 .stream()
@@ -90,7 +96,7 @@ public class GardenService {
                             .stream()
                             .filter(t -> t.getId() == tree.getId())
                             .findFirst();
-                    if(!checkForTreePresence.isPresent()) {
+                    if (!checkForTreePresence.isPresent()) {
                         treeDaoImpl.delete(tree);
                     }
                 });

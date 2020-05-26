@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GardenDaoImpl implements GardenDao {
@@ -33,13 +34,12 @@ public class GardenDaoImpl implements GardenDao {
 
     @Override
     public Garden update(Garden garden) {
-        Garden gardenToUpdate = gardensStorage
+        Optional<Garden> gardenToUpdate = gardensStorage
                 .stream()
                 .filter(g -> g.getId() == garden.getId())
-                .findFirst()
-                .orElseThrow(NoSuchElementForUpdateException::new);
+                .findFirst();
 
-        gardensStorage.set(gardensStorage.indexOf(gardenToUpdate), garden);
+        gardenToUpdate.ifPresent(g -> gardensStorage.set(gardensStorage.indexOf(g), garden));
         return garden;
     }
 
