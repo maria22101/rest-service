@@ -12,7 +12,17 @@ import java.util.Optional;
 
 @Repository
 public class GardenDaoImpl implements GardenDao {
-    private List<Garden> gardensStorage = new ArrayList<>();
+//    private List<Garden> gardensStorage = new ArrayList<>();
+    private List<Garden> gardensStorage = new ArrayList<Garden>() {{
+        add(new Garden(1, "Ivan", new ArrayList<Tree>(){{
+            add(new Tree(1, "Apple", "2.43456, 4.56486",1));
+            add(new Tree(2, "Apple", "2.43567, 4.56490", 1));
+        }}));
+        add(new Garden(2, "Petro", new ArrayList<Tree>(){{
+            add(new Tree(3, "Pear", "3.45678, 4.34567", 2));
+            add(new Tree(4, "Plum", "3.45688, 4.35555", 2));
+        }}));
+    }};
 
     @Override
     public Garden create(Garden garden) {

@@ -9,13 +9,13 @@ import java.util.*;
 
 @Repository
 public class TreeDaoImpl implements TreeDao {
-    private List<Tree> treesStorage = new ArrayList<>();
-//    private List<Tree> treesStorage = new ArrayList<Tree>() {{
-//        add(new Tree(1, "Apple", "2.43456, 4.56486",1));
-//        add(new Tree(2, "Apple", "2.43567, 4.56490", 1));
-//        add(new Tree(3, "Pear", "3.45678, 4.34567", 2));
-//        add(new Tree(4, "Plum", "3.45688, 4.35555", 2));
-//    }};
+//    private List<Tree> treesStorage = new ArrayList<>();
+    private List<Tree> treesStorage = new ArrayList<Tree>() {{
+        add(new Tree(1, "Apple", "2.43456, 4.56486",1));
+        add(new Tree(2, "Apple", "2.43567, 4.56490", 1));
+        add(new Tree(3, "Pear", "3.45678, 4.34567", 2));
+        add(new Tree(4, "Plum", "3.45688, 4.35555", 2));
+    }};
 
     @Override
     public Tree create(Tree tree) {
