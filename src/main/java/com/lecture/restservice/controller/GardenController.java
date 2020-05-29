@@ -4,6 +4,7 @@ import com.lecture.restservice.model.Garden;
 import com.lecture.restservice.model.Tree;
 import com.lecture.restservice.service.GardenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class GardenController {
         return gardenService.findAll();
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/{id}")
     public Garden getGardenById(@PathVariable int id) {
         return gardenService.findById(id);
@@ -43,6 +45,7 @@ public class GardenController {
         gardenService.deleteById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}/trees")
     public List<Tree> getGardenTrees(@PathVariable int id) {
         return gardenService.getGardenTrees(id);
